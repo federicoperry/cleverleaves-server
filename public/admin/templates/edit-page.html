@@ -1,0 +1,220 @@
+<div oc-lazy-load="['./admin/scripts/editpagecontroller.js']">
+  <section id="content" ng-controller="editPageController">
+    <div class="page-header">
+      <div class="page-header">
+        <h1>
+          <span class="icon icon30 icon-post-dark"></span>
+          Editar Página
+        </h1>
+        <div class="tools">
+          <a class="button teal form-button" ng-click="savePage()" ng-if="!!page">
+            Guardar
+          </a>
+        </div>
+      </div>
+    </div>
+    <form class="crud-form new" id="crudform" name="crudform">
+      <div class="page-body" ng-if="!!page">
+        <input name="objectId" class="field" value="" id="objectId" type="hidden">
+        <div class="margin-box cols4">
+          <div class="col3">
+            <div class="white-box">
+              <div class="padding-box">
+                <div class="input-group">
+                  <label>Titulo</label>
+                  <div class="input-box">
+                    <input name="title" class="field" placeholder="Titulo" id="title" type="text" ng-model="page[selectedLanguage+'Title']">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="white-box">
+              <div class="tabs">
+                <div ng-class="selectedTab=='detailstab' ? 'tab selected' : 'tab'" ng-click="selectTab('detailstab')">
+                  Detalles
+                </div>
+                <div ng-class="selectedTab=='seotab' ? 'tab selected' : 'tab'" ng-click="selectTab('seotab')">
+                  SEO
+                </div>
+                <div ng-class="selectedTab=='teamtab' ? 'tab selected' : 'tab'" ng-click="selectTab('teamtab')" ng-show="page.url=='about'">
+                  Team
+                </div>
+              </div>
+              <div class="padding-box">
+                <div class="tabs-boxes">
+                  <div class="tab-box" id="details" ng-show="selectedTab=='detailstab'">
+                    <div class="input-group" ng-show="page.url!='contact'">
+                      <label>Contenido</label>
+                      <div class="input-box">
+                        <div ng-controller="CkeditorCtrl">
+                          <div ckeditor="options" ng-model="$parent.page[selectedLanguage+'Html']" ready="onReady()"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-show="page.url=='contact'">
+                      <div class="input-group">
+                        <label>Email</label>
+                        <div class="input-box">
+                          <input name="email" class="field" placeholder="Email" type="text" ng-model="config.email">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Teléfonos</label>
+                        <div class="input-box">
+                          <input name="telefonos" class="field" placeholder="Telefonos" type="text" ng-model="config.telefonos">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Dirección</label>
+                        <div class="input-box">
+                          <input name="direccion" class="field" placeholder="Direccion" type="text" ng-model="config.direccion">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Dirección pie de página</label>
+                        <div class="input-box">
+                          <input name="direccion" class="field" placeholder="Direccion pie de página" type="text" ng-model="config.direccionFooter">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Facebook</label>
+                        <div class="input-box">
+                          <input name="direccion" class="field" placeholder="link página de facebook" type="text" ng-model="config.facebookLink">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Twitter</label>
+                        <div class="input-box">
+                          <input name="direccion" class="field" placeholder="link página de twitter" type="text" ng-model="config.twitterLink">
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label>Linked in</label>
+                        <div class="input-box">
+                          <input name="direccion" class="field" placeholder="link página de linked in" type="text" ng-model="config.linkedinLink">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-box" id="seo" ng-show="selectedTab=='seotab'">
+                    <div class="input-group">
+                      <label>Titulo SEO<em>(Si está vacio, se utiliza el titulo de la página)</em></label>
+                      <div class="input-box">
+                        <input id="post-seo-title" name="metaTitle" class="field" placeholder="Titulo SEO" ng-model="page[selectedLanguage+'SeoTitle']" type="text">
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <label>Descripción SEO</label>
+                      <div class="input-box">
+                        <textarea name="metaDescription" class="field" placeholder="Descripción SEO" ng-model="page[selectedLanguage+'SeoDescription']"></textarea>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                      <label>Palabras clave</label>
+                      <div class="input-box">
+                        <tags-input ng-model="page[selectedLanguage+'SeoKeywords']" class="taggle_input ui-autocomplete-input" min-length="1" placeholder="Agrega una palabra clave"></tags-input>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-box" id="team" ng-show="selectedTab=='teamtab'">
+
+                    <label>Equipo</label>
+                    <table>
+                      <tr>
+                        <th>Orden</th>
+                        <th>Foto</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
+                        <th class="editpage-member-title-th">Experiencia</th>
+                        <th></th>
+                      </tr>
+                      <tbody>
+                      <tr ng-repeat="member in team.team track by $index" ng-mouseover="hoverMember(member)" ng-mouseleave="hoverMember()">
+                        <td class="editpage-member-order-td"><input type="number" ng-model="member.order" min="1" max="{{team.team.length}}" ng-disabled="!member.objectId" ng-keypress="memberOrderChanged($index,$event,'team')" ng-blur="memberOrderChanged($index,$event,'team')" ng-disabled="memberDisabled"></td>
+                        <td class="editpage-member-photo-td">
+                          <div ng-style="{'background-image':'url('+member.photo.url+')'}" class="editpage-member-photo"></div>
+                          <div class="editpage-member-photo-upload-div" ng-show="!!member.objectId">
+                            <div ngf-select="memberPhotoUpload(member)" ng-model="member.memberPhotoUploadFile" name="memberPhotoUploadFile{{member.objectId}}" ngf-pattern="'.jpg,.png'" ngf-accept="'image/*'" ngf-max-size="2MB">Cargar</div>
+                          </div>
+                          <div ng-show="crudform['memberPhotoUploadFile{{member.objectId}}'].$error.maxSize" style="color:red">Archivo demasiado grande: max 2MB</div>
+                          <div ng-show="crudform['memberPhotoUploadFile{{member.objectId}}'].$error.pattern" style="color:red">Archivo invalido: formatos aceptados .jpg .png</div>
+                        </td>
+                        <td><textarea ng-model="member.name" ng-disabled="memberDisabled"></textarea></td>
+                        <td><textarea ng-model="member[selectedLanguage+'Position']" ng-disabled="memberDisabled"></textarea></td>
+                        <td><textarea ng-model="member[selectedLanguage+'Experience']" ng-disabled="memberDisabled"></textarea></td>
+                        <td class="editpage-member-options-td">
+                          <div ng-show="memberHovered.objectId==member.objectId">
+                            <img ng-src="/assets/images/save.png" alt="save" ng-click="saveMember(member,'TEAM')" class="editpage-member-options">
+                            <img ng-src="/assets/images/delete.png" alt="delete" ng-click="deleteMember(member)" class="editpage-member-options">
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"><div class="editpage-member-add-div" ng-click="addMember('team')">Añadir miembro</div></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <br><br><br>
+                    <label>Equipo de asesores</label>
+                    <table>
+                      <tr>
+                        <th>Orden</th>
+                        <th>Foto</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
+                        <th class="editpage-member-title-th">Experiencia</th>
+                        <th></th>
+                      </tr>
+                      <tbody>
+                      <tr ng-repeat="member in team.advisoryTeam track by $index" ng-mouseover="hoverMember(member)" ng-mouseleave="hoverMember()">
+                        <td class="editpage-member-order-td"><input type="number" ng-model="member.order" min="1" max="{{team.advisoryTeam.length}}" ng-disabled="!member.objectId" ng-keypress="memberOrderChanged($index,$event,'advisoryTeam')" ng-blur="memberOrderChanged($index,$event,'advisoryTeam')" ng-disabled="memberDisabled"></td>
+                        <td class="editpage-member-photo-td">
+                          <div ng-style="{'background-image':'url('+member.photo.url+')'}" class="editpage-member-photo"></div>
+                          <div class="editpage-member-photo-upload-div" ng-show="!!member.objectId">
+                            <div ngf-select="memberPhotoUpload(member)" ng-model="member.memberPhotoUploadFile" name="memberPhotoUploadFile{{member.objectId}}" ngf-pattern="'.jpg,.png'" ngf-accept="'image/*'" ngf-max-size="2MB">Cargar</div>
+                          </div>
+                          <div ng-show="crudform['memberPhotoUploadFile{{member.objectId}}'].$error.maxSize" style="color:#000000">Archivo demasiado grande: max 2MB</div>
+                          <div ng-show="crudform['memberPhotoUploadFile{{member.objectId}}'].$error.pattern" style="color:#000000">Archivo invalido: formatos aceptados .jpg .png</div>
+                        </td>
+                        <td><textarea ng-model="member.name" ng-disabled="memberDisabled"></textarea></td>
+                        <td><textarea ng-model="member[selectedLanguage+'Position']" ng-disabled="memberDisabled"></textarea></td>
+                        <td><textarea ng-model="member[selectedLanguage+'Experience']" ng-disabled="memberDisabled"></textarea></td>
+                        <td class="editpage-member-options-td">
+                          <div ng-show="memberHovered.objectId==member.objectId">
+                            <img ng-src="/assets/images/save.png" alt="save" ng-click="saveMember(member,'MANAGEMENT ADVISORY TEAM')" class="editpage-member-options">
+                            <img ng-src="/assets/images/delete.png" alt="delete" ng-click="deleteMember(member)" class="editpage-member-options">
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="6"><div class="editpage-member-add-div" ng-click="addMember('advisoryTeam')">Añadir miembro</div></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col mr0">
+            <div class="white-box padding-box edit-page-language">
+              <div class="input-group">
+                <label>Idioma</label>
+                <div class="select-box">
+                  <select class="field-boolean" name="whatsNew" ng-model="selectedLanguage">
+                    <option value="es" ng-selected="selectedLanguage=='es'">
+                      Español
+                    </option>
+                    <option value="en" ng-selected="selectedLanguage=='en'">
+                      Ingles
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

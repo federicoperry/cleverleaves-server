@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cleverleaves-cms">
+<head ng-controller="appHeadCtrl">
+	<base href="/">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="fragment" content="!">
+	<title ng-bind="Page.title()">Clever Leaves CMS</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#00bcb4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="msapplication-navbutton-color" content="#00bcb4">
+
+	<meta name="author" content="Clever Leaves" />
+	<meta property="og:url" content="https://cleverleaves-server.herokuapp.com" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Clever Leaves" />
+	<meta property="og:description" content="Clever Leaves description" />
+	<meta property="og:image" content="https://cleverleaves-server.herokuapp.com/assets/images/logo.png" />
+	<!--
+	<meta property="fb:app_id" content="1778428965732451" />
+	-->
+	<meta property="article:author" content="Clever Leaves" />
+	<meta property="article:publisher" content="Clever Leaves" />
+
+	<link href="./assets/css/lib/video-js5.10.4.css" type="text/css" rel="stylesheet">
+	<link href="./assets/css/lib/ng-tags-input3.1.1.css" type="text/css" rel="stylesheet">
+  <link href="./assets/css/lib/angular-datepicker.css" type="text/css" rel="stylesheet">
+	<link href="./assets/css/layout.css" type="text/css" rel="stylesheet">
+	<link href="./assets/css/mobile.css" type="text/css" rel="stylesheet" media="only screen and (max-width: 1024px)">
+
+	<link rel="shortcut icon" href="assets/images/favicon.png">
+	<link rel="apple-touch-icon" sizes="57x57" href="assets/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/images/apple-touch-icon-114x114.png">
+
+  <script>
+		var CKEDITOR_BASEPATH="/assets/scripts/lib/ckeditor/";
+  </script>
+
+	<script src="./assets/scripts/lib/jquery1.11.1.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/processing/p50.5.3.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/processing/p50.5.3.dom.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/videojs5.10.4.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/ckeditor/ckeditor4.6.0.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular1.5.7.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular-route1.5.7.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular-sanitize1.5.7.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular-cookies1.5.7.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/vjs-video0.1.6.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular-p5.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/ocLazyLoad1.0.9.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/angular-socialshare720kb2.3.1.js" type="text/javascript"></script>
+	<script src="./assets/scripts/lib/ng-tags-input3.1.1.js" type="text/javascript"></script>
+  <script src="./assets/scripts/lib/angular-datepicker.js" type="text/javascript"></script>
+  <script src="./assets/scripts/lib/ng-file-upload-all12.2.13.js" type="text/javascript"></script>
+  <script src="./assets/scripts/lib/angular-ckeditor1.0.3.js" type="text/javascript"></script>
+
+	<script src="./assets/scripts/app.js" type="text/javascript"></script>
+	<script src="./assets/scripts/404errorcontroller.js" type="text/javascript"></script>
+	<script src="./assets/scripts/400errorcontroller.js" type="text/javascript"></script>
+	<script src="./assets/scripts/indexcontroller.js" type="text/javascript"></script>
+	<script src="./assets/scripts/admincontroller.js" type="text/javascript"></script>
+
+
+</head>
+<body ng-controller="appController">
+
+<header id="header" class="dark">
+
+  <div id="logo">
+    <a href="/">
+      <img src="assets/images/logo.png" alt="Logo">
+    </a>
+  </div>
+  <!--<input type="file" id="json">-->
+  <div id="sidebar">
+    <nav id="main-menu">
+      <div ng-repeat="page in $root.pagesList track by $index" ng-show="!!$root.checkSession() && !!$root.pagesList">
+        <a ng-href="/admin/edit-page?id={{page.url}}" ng-class="page.url==$root.sidemenuSelected ? 'selected' : ''" ><!--ng-click="$root.reload()" target="_self"-->
+          <span class="icon icon16 icon-post"></span> {{page.url}} <span class="icon icon10 icon-submenu show-submenu"></span>
+        </a>
+      </div>
+      <a ng-href="/admin/edit-slider" ng-show="!!$root.checkSession() && !!$root.pagesList" ng-class="'slider'==$root.sidemenuSelected ? 'selected' : ''">
+        <span class="icon icon16 icon-post"></span> Slider <span class="icon icon10 icon-submenu show-submenu"></span>
+      </a>
+    </nav>
+  </div>
+  <nav id="user-menu">
+    <ul>
+      <li>
+        <a></a>
+        <div class="submenu">
+
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div ng-view onload="onload()"></div>
+
+
+  <footer>
+
+  </footer>
+
+</body>
+</html>

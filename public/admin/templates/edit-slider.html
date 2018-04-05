@@ -1,0 +1,66 @@
+<div oc-lazy-load="['./admin/scripts/editslidercontroller.js']">
+  <section id="content" ng-controller="editSliderController">
+    <div class="page-header">
+      <div class="page-header">
+        <h1>
+          <span class="icon icon30 icon-post-dark"></span>
+          Editar Slider
+        </h1>
+      </div>
+    </div>
+    <form class="crud-form new" id="crudform" name="crudform">
+      <div class="page-body" ng-if="!!sliderData">
+        <input name="objectId" class="field" value="" id="objectId" type="hidden">
+        <div class="margin-box cols4">
+          <div class="col3">
+            <div class="white-box">
+              <div class="padding-box">
+                <div class="image-group">
+                  <label>Galeria de Imágenes</label>
+                  <div class="post-images">
+                    <div class="editslide-slide-add-div" ng-click="addSlide()">Añadir imagen</div>
+                    <div id="gal-preloader" class="center">
+                      <div ng-repeat="image in sliderData track by $index">
+                        <input type="number" ng-model="image.order" min="1" max="{{sliderData.length}}" ng-disabled="slideDisabled || !image.objectId" ng-keypress="slideOrderChanged($index,$event)" ng-blur="slideOrderChanged($index,$event)">
+                        <textarea ng-model="image[selectedLanguage+'Caption']" class="editslide-slide-descrtiption-input" placeholder="Descripción" ng-disabled="slideDisabled"></textarea>
+                        <div ng-show="!!image.objectId">
+                          <div class="editslide-slide-add-div">
+                            <div ngf-select="slideUpload($index)" ng-model="sliderData[$index].slideUploadFile" name="slideUploadFile{{$index}}" ngf-pattern="'.jpg,.png'" ngf-accept="'image/*'" ngf-max-size="2MB">Cargar</div>
+                          </div>
+                          <div ng-style="{'background-image':'url('+image.image.url+')'}" class="editslide-slide"></div>
+                        </div>
+                        <div class="editslide-slide-save-div" ng-show="!image.objectId" ngf-select="slideUpload($index)" ng-model="sliderData[$index].slideUploadFile" name="slideUploadFile{{$index}}" ngf-pattern="'.jpg,.png'" ngf-accept="'image/*'" ngf-max-size="2MB">Cargar</div>
+                        <div class="editslide-slide-save-div" ng-click="saveSlide($index)" ng-show="!!image.objectId">Guardar</div>
+                        <span ng-show="!!image.objectId"> _ </span>
+                        <div class="editslide-slide-save-div" ng-show="!!image.objectId" ng-click="deleteSlide($index)">Borrar</div>
+                        <div ng-show="crudform['slideUploadFile{{$index}}'].$error.maxSize" style="color:#000000">Archivo demasiado grande: max 2MB</div>
+                        <div ng-show="crudform['slideUploadFile{{$index}}'].$error.pattern" style="color:#000000">Archivo invalido: formatos aceptados .jpg .png</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col mr0">
+            <div class="white-box padding-box edit-page-language">
+              <div class="input-group">
+                <label>Idioma</label>
+                <div class="select-box">
+                  <select class="field-boolean" name="whatsNew" ng-model="selectedLanguage">
+                    <option value="es" ng-selected="selectedLanguage=='es'">
+                      Español
+                    </option>
+                    <option value="en" ng-selected="selectedLanguage=='en'">
+                      Ingles
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
