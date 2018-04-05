@@ -1,0 +1,28 @@
+<section id="content">
+  <div>
+    <form ng-submit="login()" ng-show="!$root.checkSession()">
+      <div>
+        Login
+      </div>
+      <table>
+        <tr>
+          <td>Email</td>
+          <td><input type="text" ng-model="loginEmail" ></td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><input type="password" ng-model="loginPassword" ></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="submit" id="loginSubmitButton" value="Log In"></td>
+        </tr>
+      </table>
+    </form>
+    <div ng-show="$root.checkSession()">
+      <div>
+        Logged as {{$root.user.email}}
+      </div>
+      <input type="submit" value="Log out" ng-click="logout();">
+    </div>
+  </div>
+</section>
